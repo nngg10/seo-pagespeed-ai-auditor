@@ -41,6 +41,16 @@ Copiar `.env.example` como `.env`:
 - `GEMINI_API_KEY` u `OPENAI_API_KEY`: activa el agente IA. Sin clave (o si el servicio falla)
   las recomendaciones salen del motor de reglas local y la pantalla lo indica, con opción de reintentar.
 
+## Despliegue en Render
+
+- Build: `pip install -r requirements.txt`
+- Start: `uvicorn app.api:app --host 0.0.0.0 --port $PORT`
+- Variables: `OPENAI_API_KEY`, `PAGESPEED_API_KEY`, `JWT_SECRET`.
+
+En Render la aplicación visita su propia URL (`/api/salud`) cada 10 minutos para que el plan
+gratuito no la suspenda por inactividad (`app/keep_alive.py`). En local esta función no se activa.
+La base SQLite de Render es temporal: se reinicia con cada despliegue.
+
 ## Historias de usuario cubiertas
 
 | HU | Funcionalidad |

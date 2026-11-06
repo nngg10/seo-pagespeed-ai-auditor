@@ -11,6 +11,7 @@ from pydantic import BaseModel
 
 from .config import STATIC_DIR
 from .database import db
+from .keep_alive import KeepAlive
 from .models import AuditoriaRepositorio, TiendaRepositorio, Usuario, UsuarioRepositorio
 from .security import contrasenas, tokens, usuario_actual
 from .services.ai_agent import AgenteIA
@@ -21,7 +22,10 @@ from .services.pdf_report import GeneradorReportePDF
 @asynccontextmanager
 async def ciclo_de_vida(_app):
     db.inicializar()
+    keep_alive = KeepAlive.desde_entorno()
+    keep_alive.iniciar()
     yield
+    await keep_alive.detener()
 
 
 app = FastAPI(title="Auditor SEO & PageSpeed AI", version="1.0.0", lifespan=ciclo_de_vida)
@@ -219,6 +223,11 @@ def exportar_pdf(auditoria_id: int, usuario: Usuario = Depends(usuario_actual)):
     contenido = generador_pdf.generar(a, tiendas.obtener(usuario.id, a.tienda_id))
     return Response(contenido, media_type="application/pdf",
                     headers={"Content-Disposition": f'attachment; filename="Reporte-{a.codigo}.pdf"'})
+
+
+@app.get("/api/salud", include_in_schema=False)
+def salud():
+    return {"estado": "ok"}
 
 
 # --------------------------------------------------------------- Interfaz
