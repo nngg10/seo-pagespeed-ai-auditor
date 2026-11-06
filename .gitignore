@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+# Variables de entorno con claves (nunca subir)
+.env
+.env.*
+*.env
+!.env.example
+data/
