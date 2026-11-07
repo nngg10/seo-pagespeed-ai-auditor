@@ -21,7 +21,7 @@ interfaz web en HTML/CSS/JS (`app/static/`).
 ## Instalación y ejecución
 
 ```bash
-git clone https://github.com/esneider-giraldo/seo-pagespeed-ai-auditor.git
+git clone https://github.com/nngg10/seo-pagespeed-ai-auditor.git
 cd seo-pagespeed-ai-auditor
 python -m venv .venv
 .venv\Scripts\activate          # Windows  (Linux/Mac: source .venv/bin/activate)
